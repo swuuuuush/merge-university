@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#fff3e0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="合成大学校徽">
+<meta name="description" content="合成大学校徽 · 纯前端小游戏：拖动瞄准、松手投放，相同校徽撞在一起合成更高排名的高校。">
+<title>合成大学校徽</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="sketch.css">
+</head>
+<body>
+
+<main class="app">
+
+  <section class="stage" id="stage">
+    <canvas id="game" aria-label="合成大学校徽游戏区域"></canvas>
+
+    <div class="revive-chip" id="reviveBadge" hidden>
+      <span class="revive-chip-ico" aria-hidden="true">🪙</span><span id="reviveCount">×0</span>
+    </div>
+
+    <div class="overlay" id="overlay">
+      <div class="dialog">
+
+        <div class="revive-ask" id="revivePrompt" hidden>
+          <div class="dialog-emoji">😵</div>
+          <h2>还能再救一下</h2>
+          <p class="dialog-score">本局得分 <strong id="reviveScore">0</strong></p>
+          <p class="revive-hint">清掉警戒线以上的校徽，接着玩</p>
+          <div class="dialog-actions">
+            <button class="btn" id="giveUpBtn" type="button">不了，结束吧</button>
+            <button class="btn btn-revive" id="reviveBtn" type="button">🪙 用一枚复活币</button>
+          </div>
+          <p class="dialog-hint" id="reviveLeft">还剩 1 枚</p>
+        </div>
+
+        <div id="overPanel">
+          <div class="dialog-emoji">🎓</div>
+          <h2 id="overTitle">游戏结束</h2>
+          <p class="dialog-score">本局得分 <strong id="finalScore">0</strong></p>
+          <p class="dialog-best">最高分 <span id="finalBest">0</span></p>
+          <div class="dialog-actions">
+            <button class="btn btn-primary" id="restartBtn" type="button">再来一局</button>
+          </div>
+          <p class="dialog-hint">按 R 键也可重新开始</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <aside class="panel">
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-label">分数</span>
+        <strong class="stat-value" id="score">0</strong>
+      </div>
+      <div class="stat">
+        <span class="stat-label">最高分</span>
+        <strong class="stat-value stat-best" id="best">0</strong>
+      </div>
+    </div>
+
+    <div class="next-box">
+      <span class="box-label">下一个</span>
+      <canvas id="next" width="160" height="160" aria-label="下一个"></canvas>
+    </div>
+
+    <div class="chain-box">
+      <span class="box-label">合成表</span>
+      <div id="chain" class="school-chain" role="list" aria-label="合成顺序，从小到大"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="soundBtn" type="button" aria-pressed="true">
+        <span class="ico">🔊</span><span class="lbl">音效开</span>
+      </button>
+      <button class="btn btn-primary" id="resetBtn" type="button" title="重新开始">
+        <span class="ico">↻</span><span class="lbl">重开</span>
+      </button>
+    </div>
+
+  </aside>
+
+</main>
+
+<!-- 学校选择弹窗：每次重新开始时先选学校 -->
+<div class="picker" id="picker" hidden>
+  <div class="picker-card">
+    <header class="picker-head">
+      <h2>选择你的学校</h2>
+    </header>
+    <div class="picker-search">
+      <input id="pickerSearch" type="search" placeholder="搜索校名 / 简称（如“北大”“中大”）" autocomplete="off">
+    </div>
+    <div class="picker-grid" id="pickerGrid"></div>
+    <div class="picker-preview">
+      <span class="box-label">本局合成表</span>
+      <div class="picker-chain" id="pickerChain"></div>
+    </div>
+    <div class="picker-actions">
+      <button class="btn" id="pickerRandom" type="button">🎲 随机</button>
+      <button class="btn btn-primary" id="pickerStart" type="button">开始游戏</button>
+    </div>
+  </div>
+</div>
+
+<!-- 985 高校素材与轮廓，game.js 运行时会按 id 索引 -->
+<script src="schools985.js"></script>
+<script src="badges985.js"></script>
+<script src="shapes985.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
